@@ -99,6 +99,12 @@ sap.ui.define([
                     });
                 }
                 return searchCache[sValue];
+            },
+            onToggleSwitchChange: function(oEvent) {
+                var oSwitch = oEvent.getSource();
+                var oLabel = this.byId("dwd");
+                var bIsOn = oSwitch.getState();
+                oLabel._layer.setVisible(bIsOn);
             }
         });
     });

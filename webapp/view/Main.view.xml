@@ -11,6 +11,8 @@
                                 <Toolbar id="toolbar">
                                     <Label id="tableHeader" text="Geschäftspartner"/>
                                     <ToolbarSpacer id="toolbarSpacer" />
+                                    <Label id="tableHeader1" text="Wetter anzeigen"/>
+                                    <Switch id="toggleSwitch" state="true" change=".onToggleSwitchChange" />
                                     <SearchField id="searchField" width="auto" search=".onFilterBupa" />
                                 </Toolbar>
                             </headerToolbar>
@@ -45,6 +47,10 @@
                             <layer:Tile>
                                 <source:OSM url="{= 'https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=e5da76567a144d2888f7669cfcfc20b6'}"></source:OSM>
                             </layer:Tile>
+                            <layer:Vector id="dwd">
+                                <source:Vector id="vectorSource2"
+                                    url="https://maps.dwd.de/geoserver/dwd/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typeName=dwd:Warnungen_Gemeinden_vereinigt&amp;maxFeatures=50&amp;outputFormat=application%2Fjson&amp;"></source:Vector>
+                            </layer:Vector>
                             <layer:Vector>
                                 <source:Vector id="vectorSource" addfeature="onAddfeature" features="{Map>/features}">
                                     <source:features>
