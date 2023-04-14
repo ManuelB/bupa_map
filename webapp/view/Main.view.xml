@@ -21,11 +21,19 @@
                                 <Column>
                                     <Text text="Addresse" />
                                 </Column>
+                                <Column>
+                                    <Text text="Bundesland" />
+                                </Column>
+                                <Column>
+                                    <Text text="Rolle" />
+                                </Column>
                             </columns>
                             <items>
                                 <ColumnListItem>
                                     <Text text="{Name}" />
                                     <Text text="{AddressLine1Text}" />
+                                    <Text text="{Region}" />
+                                    <Text text="{Role}" />
                                 </ColumnListItem>
                             </items>
                         </Table>
