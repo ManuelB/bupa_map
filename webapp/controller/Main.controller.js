@@ -3,16 +3,20 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/m/MessageToast",
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel, Filter, FilterOperator) {
+
+    
+    function (Controller, JSONModel, Filter, FilterOperator, MessageToast) {
         "use strict";
 
         const searchCache = {};
 
-        return Controller.extend("bupamap.controller.Main", {
+        return Controller.extend("bupamap.controller.Main",
+        {
             onInit: function () {
                 const oMapModel = new JSONModel();
                 this.getView().setModel(oMapModel, "Map");
@@ -23,6 +27,51 @@ sap.ui.define([
                     }
                 };
             },
+
+            onButtonPress: function() {
+                var saveText = this.getView().getModel("i18n").getResourceBundle().getText("textSave");
+                MessageToast.show(saveText);
+            },
+            findRestaurants: async function() {
+                const coord = this.getCoordinates("Altenessener Straße 402 45329 Essen DE");
+                const query = `[out:json];
+                area[name="Essen"]->.a;
+                node(area.a)["amenity"="restaurant"];
+                out;`;
+                const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                const restaurants = data.elements.filter(elem => elem.tags && elem.tags.amenity === "restaurant");
+                return restaurants;
+              },
+            getCenter: function() {
+                const oMapModel = this.getView().getModel("Map");
+                const oDataModel = this.getView().getModel();
+                const aBusinessPartner = this.byId("table").getBinding("items").getAllCurrentContexts().map(oContext => oDataModel.getProperty(oContext.getPath()));
+                const aFeaturePromises = aBusinessPartner.map(oBusinessPartner => {
+                    return this.getCoordinates(oBusinessPartner.AddressLine1Text);
+                });
+                const oZeigen = Promise.all(aFeaturePromises).then(aFeatures => {
+                    const oData = {features: aFeatures};
+                });
+               // const oTest = this.getCoordinates("Altenessener Straße 402 45329 Essen DE")
+                sap.m.MessageToast.show(aBusinessPartner);
+            },
+            getLatLong: function(adresse) {
+                if (!adresse || adresse.length === 0) {
+                    return null;
+                  }
+                  var latSumme = 0;
+                  var lngSumme = 0;
+                  for (var i = 0; i < adresse.length; i++) {
+                    var adresse = adresse[i];
+                    latSumme += adresse.latitude;
+                    lngSumme += adresse.longitude;
+                  }
+                  var mittelwertLat = latSumme / adresse.length;
+                  var mittelwertLng = lngSumme / adresse.length;
+                  return { latitude: mittelwertLat, longitude: mittelwertLng };
+            },  
             rebuildBupaPoints: function() {
                 const oMapModel = this.getView().getModel("Map");
                 const oDataModel = this.getView().getModel();
@@ -100,11 +149,9 @@ sap.ui.define([
                 }
                 return searchCache[sValue];
             },
-            onToggleSwitchChange: function(oEvent) {
-                var oSwitch = oEvent.getSource();
-                var oLabel = this.byId("dwd");
-                var bIsOn = oSwitch.getState();
-                oLabel._layer.setVisible(bIsOn);
-            }
+
+
         });
+        
     });
+    
