@@ -4,6 +4,7 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/m/MessageToast",
+    
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
@@ -20,6 +21,8 @@ sap.ui.define([
             onInit: function () {
                 const oMapModel = new JSONModel();
                 this.getView().setModel(oMapModel, "Map");
+                const oRestaurants = new JSONModel();
+                this.getView().setModel(oRestaurants, "Restaurants");
                 const oItemsBinding = this.byId("table").getBindingInfo("items");
                 oItemsBinding.events = {
                     "dataReceived" : () => {
@@ -27,23 +30,46 @@ sap.ui.define([
                     }
                 };
             },
+            
 
             onButtonPress: function() {
                 var saveText = this.getView().getModel("i18n").getResourceBundle().getText("textSave");
                 MessageToast.show(saveText);
             },
+            onAfterRendering: function() {
+                const oMap = this.byId("map");
+                oMap.attachEvent("click", this.onMapClick, this);
+              },
+              
+              onMapClick: function(oEvent) {
+                const oMap = this.byId("map");
+                const oCoordinates = oMap.getCoordinateFromPixel([oEvent.getParameter("pixelX"), oEvent.getParameter("pixelY")]);
+                const aRestaurants = this.getRestaurantsNearCoordinates(oCoordinates);
+                this.showRestaurantsPopup(aRestaurants);
+              },
+              
             findRestaurants: async function() {
+                         
                 const coord = this.getCoordinates("Altenessener Straße 402 45329 Essen DE");
                 const query = `[out:json];
                 area[name="Essen"]->.a;
-                node(area.a)["amenity"="restaurant"];
+                node["amenity"="restaurant"](around:500, 51.451389, 7.013889);
                 out;`;
                 const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
                 const response = await fetch(url);
                 const data = await response.json();
-                const restaurants = data.elements.filter(elem => elem.tags && elem.tags.amenity === "restaurant");
+                
+                const restaurants = data.elements.filter(elem => elem.tags && elem.tags.amenity === "restaurant"); 
+                const aFeatures = []; for ( let restaurant of restaurants ){
+                    aFeatures.push({"wkt": "POINT("+restaurant.lon+" "+restaurant.lat+")"});
+                }
+                const oRestaurants = this.getView().getModel("Restaurants");
+                const oData = {features: aFeatures};
+                    oRestaurants.setData(oData);
                 return restaurants;
-              },
+                
+            },
+        
             getCenter: function() {
                 const oMapModel = this.getView().getModel("Map");
                 const oDataModel = this.getView().getModel();
@@ -56,25 +82,13 @@ sap.ui.define([
                 });
                // const oTest = this.getCoordinates("Altenessener Straße 402 45329 Essen DE")
                 sap.m.MessageToast.show(aBusinessPartner);
+                
             },
-            getLatLong: function(adresse) {
-                if (!adresse || adresse.length === 0) {
-                    return null;
-                  }
-                  var latSumme = 0;
-                  var lngSumme = 0;
-                  for (var i = 0; i < adresse.length; i++) {
-                    var adresse = adresse[i];
-                    latSumme += adresse.latitude;
-                    lngSumme += adresse.longitude;
-                  }
-                  var mittelwertLat = latSumme / adresse.length;
-                  var mittelwertLng = lngSumme / adresse.length;
-                  return { latitude: mittelwertLat, longitude: mittelwertLng };
-            },  
+            
             rebuildBupaPoints: function() {
-                const oMapModel = this.getView().getModel("Map");
+                const oMapModel = this.getView().getModel("Map");                
                 const oDataModel = this.getView().getModel();
+                const aNodes = this.byId("table").getBinding("items").getAllCurrentContexts().map(oContext => oDataModel.getProperty(oContext.getPath()));
                 const aBusinessPartner = this.byId("table").getBinding("items").getAllCurrentContexts().map(oContext => oDataModel.getProperty(oContext.getPath()));
                 const aFeaturePromises = aBusinessPartner.map(oBusinessPartner => {
                     return this.getCoordinates(oBusinessPartner.AddressLine1Text);
@@ -82,8 +96,10 @@ sap.ui.define([
                 Promise.all(aFeaturePromises).then(aFeatures => {
                     const oData = {features: aFeatures};
                     oMapModel.setData(oData);
+                    
                 });
             },
+
             onAddfeature: function() {
                 const oBupaVectorSource= this.byId("vectorSource");
                 const aExtent = oBupaVectorSource.getExtent();
