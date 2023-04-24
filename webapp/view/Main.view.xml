@@ -1,6 +1,6 @@
 <mvc:View xmlns:smartfilterbar="sap.ui.comp.smartfilterbar" xmlns:filterbar="sap.ui.comp.filterbar" xmlns:f="sap.f" controllerName="bupamap.controller.Main"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns:ol="incentergy.ol" xmlns:layer="incentergy.ol.layer" xmlns:source="incentergy.ol.source"
-    xmlns:filter="sap.Filter" xmlns="sap.m" xmlns:l="sap.ui.layout">
+    xmlns:filter="sap.Filter" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:interaction="incentergy.ol.interaction">
     
     
     <Page id="page" title="{i18n>title}">
@@ -52,6 +52,9 @@
                     <Button xmlns="sap.m" text="{i18n>btnText2}" id="button3" press="findRestaurants"/>
                     <Button xmlns="sap.m" text="{i18n>btnText}" id="button2" press="onSaveRestaurants"/>
                         <ol:Map center="1152747.3744924355, 6585240.978424183" zoom="2" id="map">
+                            <ol:interactions>
+                                <interaction:Select select="onSelect"/>
+                            </ol:interactions>
                             <layer:Tile id="_IDGenTile1">
                                 <source:OSM id="_IDGenOSM1" url="{= 'https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=e5da76567a144d2888f7669cfcfc20b6'}"></source:OSM>
                             </layer:Tile>
@@ -76,4 +79,22 @@
             </f:FlexibleColumnLayout>
         </content>
     </Page>
+    <mvc:dependents>
+        <Popover
+            id="popover"
+            title="{Restaurants>node/tags/name}"
+            placement="Top"
+            initialFocus="email">
+            <footer>
+                <OverflowToolbar>
+                    <ToolbarSpacer/>
+                    <Button
+                        id="save-to-sap"
+                        text="Save to SAP"
+                        press="onSaveToSAP" />
+                </OverflowToolbar>
+            </footer>
+            <Text text="{Restaurants>node/tags/addr:city}" />
+        </Popover>
+    </mvc:dependents>
 </mvc:View>

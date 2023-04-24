@@ -89,8 +89,11 @@ sap.ui.define([
                     const data = await response.json();
 
                     const restaurants = data.elements.filter(elem => elem.tags && elem.tags.amenity === "restaurant");
-                    const aFeatures = []; for (let restaurant of restaurants) {
-                        aFeatures.push({ "wkt": "POINT(" + restaurant.lon + " " + restaurant.lat + ")" });
+                    const aFeatures = [];
+                    for (let restaurant of restaurants) {
+                        const oRestaurant = { "wkt": "POINT(" + restaurant.lon + " " + restaurant.lat + ")" };
+                        oRestaurant.node = restaurant;
+                        aFeatures.push(oRestaurant);
                     }
                     const oRestaurants = this.getView().getModel("Restaurants");
                     const oData = { features: aFeatures };
@@ -266,6 +269,26 @@ sap.ui.define([
                     }
                     if (oEvent.getParameters().filterString) {
                         MessageToast.show(oEvent.getParameters().filterString);
+                    }
+                },
+                onSelect: function(oEvent) {
+                    const aSelectedOlFeatures = oEvent.getParameter("selectedOlFeatures");
+                    if(aSelectedOlFeatures.length >  0) {
+                        const oFeature = aSelectedOlFeatures[0];
+                        const ui5Feature = this.byId("vectorSource3").getFeatures().filter(o => o._feature === oFeature)[0];
+                        
+                        const nativeEvent = oEvent.getParameter("nativeEvent");
+                        const [x,y] = nativeEvent.mapBrowserEvent.pixel;
+                        const offsetWidth = oEvent.getSource().getParent().getDomRef().offsetWidth;
+
+                        const popover = this.byId("popover");
+                        popover.bindElement({
+                            "path": ui5Feature.getBindingContext("Restaurants").getPath(),
+                            "model": "Restaurants"
+                        });
+                        popover.setOffsetX(Math.round(x-(offsetWidth/2)));
+                        popover.setOffsetY(y);
+                        popover.openBy(oEvent.getSource().getParent());
                     }
                 }
 
