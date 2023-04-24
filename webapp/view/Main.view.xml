@@ -1,6 +1,8 @@
-<mvc:View xmlns:f="sap.f" controllerName="bupamap.controller.Main"
+<mvc:View xmlns:smartfilterbar="sap.ui.comp.smartfilterbar" xmlns:filterbar="sap.ui.comp.filterbar" xmlns:f="sap.f" controllerName="bupamap.controller.Main"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns:ol="incentergy.ol" xmlns:layer="incentergy.ol.layer" xmlns:source="incentergy.ol.source"
-    xmlns="sap.m">
+    xmlns:filter="sap.Filter" xmlns="sap.m" xmlns:l="sap.ui.layout">
+    
+    
     <Page id="page" title="{i18n>title}">
         <content>
         
@@ -10,31 +12,36 @@
                         <Table id="table" growing="true" growingScrollToLoad="true" items="{/C_BusinessPartner}">
                             <headerToolbar>
                                 <Toolbar id="toolbar">
-                                    <Label id="tableHeader" text="Geschäftspartner"/>
-                                    <ToolbarSpacer id="toolbarSpacer" />
-                                    <SearchField id="searchField" width="auto" search=".onFilterBupa" />
+                                     <Label id="tableHeader" text="Geschäftspartner"/> 
+                                    <ToolbarSpacer id="ToolbarSpacer"/>                               
+                                    <SearchField id="searchField" width="33%" search=".onFilterBupa" />
+                                     <Button xmlns:filter="sap.Filter" id="button4" text="" icon="sap-icon://filter" press="handleOpenDialog"/>
                                 </Toolbar>
                             </headerToolbar>
                             <columns>
-                                <Column id="_IDGenColumn1">
-                                    <Text id="_IDGenText1" text="Name" />
+                                <Column>
+                                    <Text text="Vorname" />
                                 </Column>
-                                <Column id="_IDGenColumn2">
-                                    <Text id="_IDGenText2" text="Addresse" />
+                                <Column>
+                                    <Text text="Nachname" />
                                 </Column>
-                                <Column id="_IDGenColumn3">
-                                    <Text id="_IDGenText3" text="Bundesland" />
+                                <Column>
+                                    <Text text="Addresse" />
                                 </Column>
-                                <Column id="_IDGenColumn4">
-                                    <Text id="_IDGenText4" text="Rolle" />
+                                <Column>
+                                    <Text text="Bundesland" />
+                                </Column>
+                                <Column>
+                                    <Text text="Rolle" />
                                 </Column>
                             </columns>
                             <items>
-                                <ColumnListItem id="_IDGenColumnListItem1">
-                                    <Text id="_IDGenText5" text="{Name}" />
-                                    <Text id="_IDGenText6" text="{AddressLine1Text}" />
-                                    <Text id="_IDGenText7" text="{Region}" />
-                                    <Text id="_IDGenText8" text="{Role}" />
+                                 <ColumnListItem>
+                                    <Text text="{FirstName}" />
+                                    <Text text="{Name}" />
+                                    <Text text="{AddressLine1Text}" />
+                                    <Text text="{Region}" />
+                                    <Text text="{Role}" />
                                 </ColumnListItem>
                             </items>
                         </Table>

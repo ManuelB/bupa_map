@@ -1,1 +1,36 @@
 /* Enter your custom styles here */
+/* Hintergrundfarbe der Liste ändern */
+
+.sapMList {
+    background-color: #d4c6c6;
+    border: 1px solid #b6aaaa;
+    font-size: 16px;
+    color: #f50c0c;
+  }
+  .sapMBarPH {
+    background-color: #ec7ee7;
+  }
+
+.sapMBarLeft {
+  background-color: #b64b8d;
+}
+.sapMBarMiddle {
+  background-color: #7f79d6;
+}
+.sapMBarRight {
+  background-color: #8c8aaf;
+}
+  .sapMText {
+    background-color: #d4c6c6;
+    color: rgb(53, 196, 72);
+  }
+.sapMListTbl{
+  color: rgb(53, 196, 72);
+  }
+  .sapMSFS{
+    color: rgb(213, 120, 236);
+    }
+    .sapMNav{
+      background-color: #d4c6c6;
+      color: rgb(213, 120, 236);
+      }

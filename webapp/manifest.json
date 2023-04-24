@@ -15,6 +15,7 @@
       "version": "1.9.3",
       "toolsId": "730aca79-8cbe-42e6-8433-d43340f9972b"
     },
+    
     "dataSources": {
       "mainService": {
         "uri": "/sap/opu/odata/sap/MD_BUSINESSPARTNER_SRV/",
@@ -58,6 +59,7 @@
         "sap.ui.table": {},
         "sap.ushell": {}
       }
+      
     },
     "contentDensities": {
       "compact": true,
@@ -92,6 +94,7 @@
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false
+        
       },
       "routes": [
         {
@@ -110,6 +113,7 @@
           "viewId": "Main",
           "viewName": "Main"
         }
+        
       }
     },
     "rootView": {

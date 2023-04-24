@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "bupa_map-config1",
+            "cwd": "${workspaceFolder}",
+            "runtimeArgs": [
+                "fiori",
+                "run"
+            ],
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "npx",
+            "args": [
+                "--open",
+                "index.html"
+            ],
+            "windows": {
+                "runtimeExecutable": "npx.cmd"
+            },
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart",
+            "outputCapture": "std",
+            "env": {
+                "run.config": "{\"handlerId\":\"fiori_tools\",\"runnableId\":\"/home/user/projects/bupa_map\"}",
+                "FIORI_TOOLS_BACKEND_CONFIG": "[{\"path\":\"/sap\",\"url\":\"https://obd.in4md-service.de\",\"client\":\"500\"}]",
+                "FIORI_TOOLS_URL_PARAMS": "sap-ui-01-viewCache=false"
+            }
+        }
+    ]
+}

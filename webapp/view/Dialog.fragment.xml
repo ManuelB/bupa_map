@@ -1,0 +1,38 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ViewSettingsDialog id="_IDGenViewSettingsDialog1"
+		confirm="handleConfirm">
+		<sortItems>
+			<ViewSettingsItem id="_IDGenViewSettingsItem1" text="Vorname" key="FirstName" selected="true" />
+			<ViewSettingsItem id="_IDGenViewSettingsItem2" text="Nachname" key="Name" />
+			<ViewSettingsItem id="_IDGenViewSettingsItem3" text="Adresse" key="AddressLine1Text" />
+			<ViewSettingsItem id="_IDGenViewSettingsItem4" text="Bundesland" key="Region" />
+			<ViewSettingsItem id="_IDGenViewSettingsItem5" text="Rolle" key="Role" />
+		</sortItems>
+		<groupItems>
+		    <ViewSettingsItem id="_IDGenViewSettingsItem6" text="Vorname" key="FirstName" />
+		    <ViewSettingsItem id="_IDGenViewSettingsItem7" text="Nachname" key="Name" />
+			<ViewSettingsItem id="_IDGenViewSettingsItem8" text="Rolle" key="Role" />
+			<ViewSettingsItem id="_IDGenViewSettingsItem9" text="Adresse" key="AddressLine1Text" />
+			<ViewSettingsItem id="_IDGenViewSettingsItem10" text="Bundesland" key="Region" />
+		</groupItems>
+		<filterItems>
+			<ViewSettingsFilterItem id="_IDGenViewSettingsFilterItem1" text="Rolle" key="1">
+				<items>
+					<ViewSettingsItem id="_IDGenViewSettingsItem11" text="Kunde" key="Role___EQ___FLCU01" />
+					<ViewSettingsItem id="_IDGenViewSettingsItem12" text="Kreditor" key="Role___EQ___FLVN00" />
+					<ViewSettingsItem id="_IDGenViewSettingsItem13" text="Lieferant" key="Role___EQ___FLVN01" />
+				</items>
+			</ViewSettingsFilterItem>
+			<ViewSettingsFilterItem id="_IDGenViewSettingsFilterItem2" text="Adresse" key="2">
+			<items>
+			<ViewSettingsItem id="_IDGenViewSettingsItem14" text="Essen" key="CityName___EQ___Essen" />
+			<ViewSettingsItem id="_IDGenViewSettingsItem15" text="Hamburg" key="CityName___EQ___Hamburg" />
+			<ViewSettingsItem id="_IDGenViewSettingsItem16" text="Berlin" key="CityName___EQ___Berlin" />
+			<ViewSettingsItem id="_IDGenViewSettingsItem17" text="München" key="CityName___EQ___München" />
+			</items>
+			</ViewSettingsFilterItem>
+		</filterItems>
+	</ViewSettingsDialog>
+</core:FragmentDefinition>
